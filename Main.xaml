@@ -84,15 +84,13 @@
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="Getir Komisyon Tutarı Hesaplama" sap:VirtualizedContainerService.HintSize="376,783" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:Double" Name="SatisTutari" />
-      <Variable x:TypeArguments="x:Double" Name="test" />
-      <Variable x:TypeArguments="x:Double" Name="text" />
-      <Variable x:TypeArguments="x:String" Name="Secim" />
-      <Variable x:TypeArguments="x:Double" Name="OnerilenTutar" />
-      <Variable x:TypeArguments="sd:DataTable" Name="SonucFiyatTablosu" />
-      <Variable x:TypeArguments="x:String" Name="okay" />
-      <Variable x:TypeArguments="x:Int32" Name="UrunSayisi" />
-      <Variable x:TypeArguments="x:Int32" Default="0" Name="urun" />
+      <Variable x:TypeArguments="x:Double" Name="db_SatisTutari" />
+      <Variable x:TypeArguments="x:String" Name="str_Secim" />
+      <Variable x:TypeArguments="x:Double" Name="db_OnerilenTutar" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_SonucFiyatTablosu" />
+      <Variable x:TypeArguments="x:String" Name="str_Cevap" />
+      <Variable x:TypeArguments="x:Int32" Name="int_UrunSayisi" />
+      <Variable x:TypeArguments="x:Int32" Default="0" Name="int_urun" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -107,7 +105,7 @@
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:BuildDataTable DataTable="[SonucFiyatTablosu]" DisplayName="Build Data Table - Sonuç Fiyat Tablosu" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;İşletme_x0020_Satış_x0020_Fiyatı&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Önerilen_x0020_Getir_x0020_Satış_x0020_Fiyatı&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;">
+      <ui:BuildDataTable DataTable="[dt_SonucFiyatTablosu]" DisplayName="Build Data Table - Sonuç Fiyat Tablosu" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;İşletme_x0020_Satış_x0020_Fiyatı&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Önerilen_x0020_Getir_x0020_Satış_x0020_Fiyatı&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -124,7 +122,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </ui:LogMessage>
     </Sequence>
-    <ui:InterruptibleDoWhile CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Hatalı girişe karşı try catch aktivitesi içerisinde kaç tane ürün için işlem yapılacağı ve o işlem sayısı kadar ürün satış fiyatı öğrenilip hesaplamaların yapılması. Başka bir işlem varsa devam edilmesi yoksa işlem bitirilerek yazma aşamasına geçilmesi." Condition="[Secim.Contains(&quot;EVET&quot;)]" DisplayName="Do While : Tutar Girişi ve Önerilen Tutarın bulunması" sap:VirtualizedContainerService.HintSize="334,312" sap2010:WorkflowViewState.IdRef="InterruptibleDoWhile_2">
+    <ui:InterruptibleDoWhile CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Hatalı girişe karşı try catch aktivitesi içerisinde kaç tane ürün için işlem yapılacağı ve o işlem sayısı kadar ürün satış fiyatı öğrenilip hesaplamaların yapılması. Başka bir işlem varsa devam edilmesi yoksa işlem bitirilerek yazma aşamasına geçilmesi." Condition="[str_Secim.Contains(&quot;EVET&quot;)]" DisplayName="Do While : Tutar Girişi ve Önerilen Tutarın bulunması" sap:VirtualizedContainerService.HintSize="334,312" sap2010:WorkflowViewState.IdRef="InterruptibleDoWhile_2">
       <ui:InterruptibleDoWhile.Body>
         <TryCatch sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="TryCatch_1">
           <sap:WorkflowViewStateService.ViewState>
@@ -143,7 +141,7 @@
               </sap:WorkflowViewStateService.ViewState>
               <ui:InputDialog Options="{x:Null}" OptionsString="{x:Null}" DisplayName="Input Dialog : Kaç ürün girişi olacak?" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InputDialog_7" IsPassword="False" Label="Kaç ürünün katalog fiyatını öğrenmek istiyorsunuz? " Title="Getir Komisyon Tutarı Hesapla">
                 <ui:InputDialog.Result>
-                  <OutArgument x:TypeArguments="x:Int32">[UrunSayisi]</OutArgument>
+                  <OutArgument x:TypeArguments="x:Int32">[int_UrunSayisi]</OutArgument>
                 </ui:InputDialog.Result>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -152,7 +150,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:InputDialog>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[urunsayisi.ToString + &quot; ürün sayısı girmek istendi&quot;]">
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[int_UrunSayisi.ToString + &quot; ürün sayısı girmek istendi&quot;]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -160,7 +158,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:LogMessage>
-              <ui:InterruptibleDoWhile CurrentIndex="{x:Null}" Condition="[urun&lt;UrunSayisi]" DisplayName="Do While : Ürün sayısına ulaşana kadar işlem yapılması" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InterruptibleDoWhile_3">
+              <ui:InterruptibleDoWhile CurrentIndex="{x:Null}" Condition="[int_urun&lt;int_UrunSayisi]" DisplayName="Do While : Ürün sayısına ulaşana kadar işlem yapılması" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InterruptibleDoWhile_3">
                 <ui:InterruptibleDoWhile.Body>
                   <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,976" sap2010:WorkflowViewState.IdRef="Sequence_20">
                     <sap:WorkflowViewStateService.ViewState>
@@ -171,7 +169,7 @@
                     </sap:WorkflowViewStateService.ViewState>
                     <ui:InputDialog Options="{x:Null}" OptionsString="{x:Null}" DisplayName="Input Dialog : Her ürün için işletme satış fiyatı girilmesi" sap:VirtualizedContainerService.HintSize="334,238" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="İşyeri ürün satış fiyatınızı giriniz." Title="Getir Komisyon Tutarı Hesapla">
                       <ui:InputDialog.Result>
-                        <OutArgument x:TypeArguments="x:Double">[SatisTutari]</OutArgument>
+                        <OutArgument x:TypeArguments="x:Double">[db_SatisTutari]</OutArgument>
                       </ui:InputDialog.Result>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -182,13 +180,13 @@
                     </ui:InputDialog>
                     <Assign DisplayName="Assign : Her işlem sonunda sayma yapılır." sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                       <Assign.To>
-                        <OutArgument x:TypeArguments="x:Int32">[urun]</OutArgument>
+                        <OutArgument x:TypeArguments="x:Int32">[int_urun]</OutArgument>
                       </Assign.To>
                       <Assign.Value>
-                        <InArgument x:TypeArguments="x:Int32">[urun+1]</InArgument>
+                        <InArgument x:TypeArguments="x:Int32">[int_urun+1]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[urun.ToString + &quot;.ürünün satış fiyatı girildi.&quot; + SatisTutari.ToString + &quot; TL&quot;]">
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[int_urun.ToString + &quot;.ürünün satış fiyatı girildi.&quot; + db_SatisTutari.ToString + &quot; TL&quot;]">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -201,34 +199,34 @@
                         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
                             <ui:AssignOperation.To>
-                              <OutArgument x:TypeArguments="x:Double">[OnerilenTutar]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Double">[db_OnerilenTutar]</OutArgument>
                             </ui:AssignOperation.To>
                             <ui:AssignOperation.Value>
-                              <InArgument x:TypeArguments="x:Double">[((CDbl(4.13)/CDbl(SatisTutari))*100+17.70)]</InArgument>
+                              <InArgument x:TypeArguments="x:Double">[((CDbl(4.13)/CDbl(db_SatisTutari))*100+17.70)]</InArgument>
                             </ui:AssignOperation.Value>
                           </ui:AssignOperation>
                           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
                             <ui:AssignOperation.To>
-                              <OutArgument x:TypeArguments="x:Double">[OnerilenTutar]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Double">[db_OnerilenTutar]</OutArgument>
                             </ui:AssignOperation.To>
                             <ui:AssignOperation.Value>
-                              <InArgument x:TypeArguments="x:Double">[((CDbl(SatisTutari)/100*CDbl(OnerilenTutar)))]</InArgument>
+                              <InArgument x:TypeArguments="x:Double">[((CDbl(db_SatisTutari)/100*CDbl(db_OnerilenTutar)))]</InArgument>
                             </ui:AssignOperation.Value>
                           </ui:AssignOperation>
                           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
                             <ui:AssignOperation.To>
-                              <OutArgument x:TypeArguments="x:Double">[OnerilenTutar]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Double">[db_OnerilenTutar]</OutArgument>
                             </ui:AssignOperation.To>
                             <ui:AssignOperation.Value>
-                              <InArgument x:TypeArguments="x:Double">[math.Ceiling(OnerilenTutar)]</InArgument>
+                              <InArgument x:TypeArguments="x:Double">[math.Ceiling(db_OnerilenTutar)]</InArgument>
                             </ui:AssignOperation.Value>
                           </ui:AssignOperation>
                           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
                             <ui:AssignOperation.To>
-                              <OutArgument x:TypeArguments="x:Double">[OnerilenTutar]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Double">[db_OnerilenTutar]</OutArgument>
                             </ui:AssignOperation.To>
                             <ui:AssignOperation.Value>
-                              <InArgument x:TypeArguments="x:Double">[SatisTutari+OnerilenTutar]</InArgument>
+                              <InArgument x:TypeArguments="x:Double">[db_SatisTutari+db_OnerilenTutar]</InArgument>
                             </ui:AssignOperation.Value>
                           </ui:AssignOperation>
                         </scg:List>
@@ -240,7 +238,7 @@
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                     </ui:MultipleAssign>
-                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Hesaplama işlemi tamamlandı.&quot; + OnerilenTutar.ToString + &quot; TL önerilen fiyat olarak belirlendi.&quot;]">
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Hesaplama işlemi tamamlandı.&quot; + db_OnerilenTutar.ToString + &quot; TL önerilen fiyat olarak belirlendi.&quot;]">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -248,7 +246,7 @@
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                     </ui:LogMessage>
-                    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{SatisTutari.ToString+&quot; TL&quot;, OnerilenTutar.ToString+&quot; TL&quot;}]" DataTable="[SonucFiyatTablosu]" DisplayName="Add Data Row : Satış Tutarı ve Önerilen Tutarın satırlara yazımı" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="AddDataRow_1">
+                    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{db_SatisTutari.ToString+&quot; TL&quot;, db_OnerilenTutar.ToString+&quot; TL&quot;}]" DataTable="[dt_SonucFiyatTablosu]" DisplayName="Add Data Row : Satış Tutarı ve Önerilen Tutarın satırlara yazımı" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="AddDataRow_1">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -264,7 +262,7 @@
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                     </ui:LogMessage>
-                    <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box : Önerilen Tutar " sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="MessageBox_6" Text="[&quot;Önerilen Getir Çarşı Katalog Satış Fiyatı &quot; +&quot; &quot;+ OnerilenTutar.ToString + &quot; &quot; + &quot;TL'dir.&quot;]">
+                    <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box : Önerilen Tutar " sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="MessageBox_6" Text="[&quot;Önerilen Getir Çarşı Katalog Satış Fiyatı &quot; +&quot; &quot;+ db_OnerilenTutar.ToString + &quot; &quot; + &quot;TL'dir.&quot;]">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -291,7 +289,7 @@
               </ui:LogMessage>
               <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog : İşlem sayısına ulaşıldığında devam edilmeli mi ?" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InputDialog_4" IsPassword="False" Label="Başka girmek istediğiniz ürün satış fiyatı var mı?" OptionsString="EVET;HAYIR" Title="Getir Komisyon Tutarı Hesapla">
                 <ui:InputDialog.Result>
-                  <OutArgument x:TypeArguments="x:String">[Secim]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String">[str_Secim]</OutArgument>
                 </ui:InputDialog.Result>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -300,7 +298,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:InputDialog>
-              <If Condition="[Secim.Contains(&quot;EVET&quot;)]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_5">
+              <If Condition="[str_Secim.Contains(&quot;EVET&quot;)]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_5">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -310,7 +308,7 @@
                 <If.Then>
                   <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
                     <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int32">[urun]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Int32">[int_urun]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
                       <InArgument x:TypeArguments="x:Int32">0</InArgument>
@@ -357,7 +355,7 @@
                   </ui:MessageBox>
                   <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="InputDialog_5" IsPassword="False" Label="Başka girmek istediğiniz ürün satış fiyatı var mı?" OptionsString="EVET;HAYIR" Title="Getir Komisyon Tutarı Hesapla">
                     <ui:InputDialog.Result>
-                      <OutArgument x:TypeArguments="x:String">[Secim]</OutArgument>
+                      <OutArgument x:TypeArguments="x:String">[str_Secim]</OutArgument>
                     </ui:InputDialog.Result>
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -395,7 +393,7 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </ui:LogMessage>
-                  <ui:MessageBox Caption="{x:Null}" AutoCloseAfter="00:00:00" Buttons="OkCancel" ChosenButton="[okay]" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="MessageBox_8" Text="[&quot;Yanlış giriş yaptınız. Tekrar Deneyiniz.&quot;]">
+                  <ui:MessageBox Caption="{x:Null}" AutoCloseAfter="00:00:00" Buttons="OkCancel" ChosenButton="[str_Cevap]" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="MessageBox_8" Text="[&quot;Yanlış giriş yaptınız. Tekrar Deneyiniz.&quot;]">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -403,7 +401,7 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </ui:MessageBox>
-                  <If Condition="[okay.contains(&quot;Cancel&quot;)]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_4">
+                  <If Condition="[str_Cevap.contains(&quot;Cancel&quot;)]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_4">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -419,7 +417,7 @@
                         </sap:WorkflowViewStateService.ViewState>
                         <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
                           <Assign.To>
-                            <OutArgument x:TypeArguments="x:String">[Secim]</OutArgument>
+                            <OutArgument x:TypeArguments="x:String">[str_Secim]</OutArgument>
                           </Assign.To>
                           <Assign.Value>
                             <InArgument x:TypeArguments="x:String">HAYIR</InArgument>
@@ -445,7 +443,7 @@
                         </sap:WorkflowViewStateService.ViewState>
                         <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                           <Assign.To>
-                            <OutArgument x:TypeArguments="x:String">[Secim]</OutArgument>
+                            <OutArgument x:TypeArguments="x:String">[str_Secim]</OutArgument>
                           </Assign.To>
                           <Assign.Value>
                             <InArgument x:TypeArguments="x:String">EVET</InArgument>
@@ -453,7 +451,7 @@
                         </Assign>
                         <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                           <Assign.To>
-                            <OutArgument x:TypeArguments="x:Int32">[urun]</OutArgument>
+                            <OutArgument x:TypeArguments="x:Int32">[int_urun]</OutArgument>
                           </Assign.To>
                           <Assign.Value>
                             <InArgument x:TypeArguments="x:Int32">0</InArgument>
@@ -497,7 +495,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:LogMessage>
-    <ui:WriteRange AddHeaders="True" DataTable="[SonucFiyatTablosu]" DisplayName="Write Range : Sonuçların  Excele yazılması" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Fiyatlar" StartingCell="A1" WorkbookPath="Fiyat Tablosu.xlsx">
+    <ui:WriteRange AddHeaders="True" DataTable="[dt_SonucFiyatTablosu]" DisplayName="Write Range : Sonuçların  Excele yazılması" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Fiyatlar" StartingCell="A1" WorkbookPath="Fiyat Tablosu.xlsx">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
