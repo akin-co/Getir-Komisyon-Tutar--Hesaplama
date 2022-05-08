@@ -1,5 +1,5 @@
 {
-  "UiPath.UIAutomationNext.Activities.Generic.CaptureScreenshots": "True",
+  "UiPath.UIAutomationNext.Activities.Generic.CaptureScreenshots": "False",
   "UiPath.UIAutomationNext.Activities.SearchStepsWnd.InteractionMode": "HardwareEvents",
   "UiPath.UIAutomationNext.Activities.SearchStepsWnd.FullSelector": "True",
   "UiPath.UIAutomationNext.Activities.SearchStepsWnd.FuzzySelector": "True",
